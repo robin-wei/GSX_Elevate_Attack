@@ -23,6 +23,7 @@ Note: Students don’t need to access the coinforge server or the attacker’s m
 # Attack
 
 Run 2 attacks as a service: 
+
 	a. Upload the coin tokens to Kali to simulate data exfiltration (Tigger SNA alerts) (1,2)
 	b. Interrupting coin flow, change ip and url for cfg.json to interrupt the communication and also receive post data as stealing data  (3,4,5) 
 
