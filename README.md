@@ -46,8 +46,11 @@ http post service on 5000 - http://198.18.14.2:5000
 Coinforge crontab
 
 * * * * * /coin-forge/forge-script.sh >> /coin-forge/forge-script.log 2>&1
+
 * * * * * /coin-forge/health-script-5s-cronwrapper.sh >> /coin-forge/health-script.log 2>&1
+
 */3 * * * * /coin-forge/restore_cfg.sh >> /coin-forge/restore.log 2>&1
+
 
 # To be done
 
