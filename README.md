@@ -2,41 +2,39 @@
 
 # Background
 
-1. Challenge : The OS of Coinforge server is quite old and 32 bit.  Agent of Caldera can not be deployed on it. (Re-compiling is also a problem as go-gang doesn’t run on 32 bit). It is also too old to instal MSFC framework on it.
-2. Good Chance:  This old Metasploit server has been installed a samba3.0.20 that has an available vulnerability to be leveraged for establish C&C.
+	1. Challenge : The OS of Coinforge server is quite old and 32 bit.  Agent of Caldera can not be deployed on it. (Re-compiling is also a problem as go-gang doesn’t run on 32 bit). It is also too old to instal MSFC framework on it.
+	2. Good Chance:  This old Metasploit server has been installed a samba3.0.20 that has an available vulnerability to be leveraged for establish C&C.
 
 # Method 
 
-1. Kali has MSFC and works well, so we may use Kali as the control server of attack, to leverage samba vulnerability to establish the command and control tunnel.
-2. Coinforge will be the target controlled by Kali.
+	1. Kali has MSFC and works well, so we may use Kali as the control server of attack, to leverage samba vulnerability to establish the command and control tunnel.
+	2. Coinforge will be the target controlled by Kali.
 
 # Story Line
 
-1. Students access CTF portal to watch the points of coin business and also aceess coin collector's web portal to monitor the stauts of coinforge servers
-2. Students notice that their points are no longer increasing or are increasing very slowly. At the same time, they observe that the coinforge server status is "offline," or it keeps switching between "online" and "offline." This indicates that the coin business is being interrupted, someone might be trying to disrupt it.
-3. Students access XDR/SNA and find that an incident / alert has been happening, they investigate the attack chain, observables, events, netflows to confirm the Attack's IP address is doing some bad thing. Data Exfiltration/Data Loss is expected on SNA / XDR.
-4. Students access FMC to create a rule and apply it to block the conversation between Attacker and coinforge servers
-5. After waiting for about 5 minutes, students can see that their points start increasing again, and the coinforge server status is now "online." This indicates that the business has recovered and the hacker attack has been successfully stopped.
+	1. Students access CTF portal to watch the points of coin business and also aceess coin collector's web portal to monitor the stauts of coinforge servers
+	2. Students notice that their points are no longer increasing or are increasing very slowly. At the same time, they observe that the coinforge server status is "offline," or it keeps switching between "online" and "offline." This indicates that the coin business is being interrupted, someone might be trying to disrupt it.
+	3. Students access XDR/SNA and find that an incident / alert has been happening, they investigate the attack chain, observables, events, netflows to confirm the Attack's IP address is doing some bad thing. Data Exfiltration/Data Loss is expected on SNA / XDR.
+	4. Students access FMC to create a rule and apply it to block the conversation between Attacker and coinforge servers
+	5. After waiting for about 5 minutes, students can see that their points start increasing again, and the coinforge server status is now "online." This indicates that the business has recovered and the hacker attack has been successfully stopped.
 
-Note: Students don’t need to access the coinforge server or the attacker’s machine manually, as all necessary scripts are already scheduled via crontab.
+	Note: Students don’t need to access the coinforge server or the attacker’s machine manually, as all necessary scripts are already scheduled via crontab.
 
 # Attack
 
-Run 2 attacks as a service: 
+	Run 2 attacks as a service: 
 
-	a. Upload the coin tokens to Kali to simulate data exfiltration (Tigger SNA alerts) (1,2)
-	b. Interrupting coin flow, change ip and url for cfg.json to interrupt the communication and also receive post data as stealing data  (3,4,5) 
-
-Notes:  Need a script to recovery the cfg.ison file in cron task.
+		a. Upload the coin tokens to Kali to simulate data exfiltration (Tigger SNA alerts) (1,2)
+		b. Interrupting coin flow, change ip and url for cfg.json to interrupt the communication and also receive post data as stealing data  (3,4,5) 
 
 # Files & Scripts
 
-1. samba_exfil.rc  and coin_exfil.sh  are in /home/dcloud/coinbank on Kali linux (Attack-01), they run the msfc with samba vulnerability to establish C&C and upload coin tokens to Kali. - crontab per 10 mins
-2. gather_coins.sh (on Coinforge) is for generating coin tokens - just run 1 time to create coin tokens file
-3. web/coinworm.html   coin worm for easter eggs - systemctl service - Easter eggs
-4. web/samba_cfg_modify.rc and coin_cfg_update.sh interruts the coin flow by changing ip and url of cfg.json. - crontab per 2 mins
-5. postserver.py  receive post data from Coinforge after changing cfg.json - systemctl service
-6. restore_cfg.sh restore the origenal ip and URL for cfg.json to make sure communication with Coin Collector works. - crontab per 3 mins
+	1. samba_exfil.rc  and coin_exfil.sh  are in /home/dcloud/coinbank on Kali linux (Attack-01), they run the msfc with samba vulnerability to establish C&C and upload coin tokens to Kali. - crontab per 10 mins
+	2. gather_coins.sh (on Coinforge) is for generating coin tokens - just run 1 time to create coin tokens file
+	3. web/coinworm.html   coin worm for easter eggs - systemctl service - Easter eggs
+	4. web/samba_cfg_modify.rc and coin_cfg_update.sh interruts the coin flow by changing ip and url of cfg.json. - crontab per 2 mins
+	5. postserver.py  receive post data from Coinforge after changing cfg.json - systemctl service
+	6. restore_cfg.sh restore the origenal ip and URL for cfg.json to make sure communication with Coin Collector works. - crontab per 3 mins
 
 # Cron Task and Automation
 
