@@ -30,11 +30,9 @@ Notes:  Need a script to recovery the cfg.ison file in cron task.
 # Cron Task and Automation
 
 Attacker (Kali) crontab
-
 */2 * * * * /home/dcloud/coinbank/web/coin_cfg_update.sh >> /home/dcloud/coinbank/web/coin_cfg_update.log 2>&1
 
 Attacker (Kali)
-
 systemctl service: coinworm-web.service
 http get service on 8088  - http://198.18.14.2:8088/coinworm.html
 
@@ -42,7 +40,6 @@ systemctl service: postserver.service
 http post service on 5000 - http://198.18.14.2:5000
 
 Coinforge crontab
-
 * * * * * /coin-forge/forge-script.sh >> /coin-forge/forge-script.log 2>&1
 * * * * * /coin-forge/health-script-5s-cronwrapper.sh >> /coin-forge/health-script.log 2>&1
 */3 * * * * /coin-forge/restore_cfg.sh >> /coin-forge/restore.log 2>&1
