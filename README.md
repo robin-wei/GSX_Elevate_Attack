@@ -20,9 +20,9 @@ Notes:  Need a script to recovery the cfg.ison file in cron task.
 
 # Files & Scripts
 
-1. samba_exfil.rc  and coin_exfil.sh  are in /home/dcloud/coinbank on Kali linux (Attack-01), they run the msfc with samba vulnerability to establish C&C and upload coin tokens to Kali.
-2. gather_coins.sh (on Coinforge) is for generating coin tokens
-3. web/coinworm.html   coin worm for easter eggs - systemctl service
+1. samba_exfil.rc  and coin_exfil.sh  are in /home/dcloud/coinbank on Kali linux (Attack-01), they run the msfc with samba vulnerability to establish C&C and upload coin tokens to Kali. - crontab per 10 mins
+2. gather_coins.sh (on Coinforge) is for generating coin tokens - just run 1 time to create coin tokens file
+3. web/coinworm.html   coin worm for easter eggs - systemctl service - Easter eggs
 4. web/samba_cfg_modify.rc and coin_cfg_update.sh interruts the coin flow by changing ip and url of cfg.json. - crontab per 2 mins
 5. postserver.py  receive post data from Coinforge after changing cfg.json - systemctl service
 6. restore_cfg.sh restore the origenal ip and URL for cfg.json to make sure communication with Coin Collector works. - crontab per 3 mins
@@ -32,6 +32,7 @@ Notes:  Need a script to recovery the cfg.ison file in cron task.
 Attacker (Kali) crontab
 
 */2 * * * * /home/dcloud/coinbank/web/coin_cfg_update.sh >> /home/dcloud/coinbank/web/coin_cfg_update.log 2>&1
+*/10 * * * * /home/dcloud/coinbank/coin_exfil.sh >> /home/dcloud/coinbank/exfil.log 2>&1
 
 Attacker (Kali)
 
