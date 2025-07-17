@@ -14,7 +14,7 @@
 
 	1. Students access CTF portal to watch the points of coin business and also aceess coin collector's web portal to monitor the stauts of coinforge servers
 	2. Students notice that their points are no longer increasing or are increasing very slowly. At the same time, they observe that the coinforge server status is "offline," or it keeps switching between "online" and "offline." This indicates that the coin business is being interrupted, someone might be trying to disrupt it.
-	3. Students access XDR/SNA and find that an incident / alert has been happening, they investigate the attack chain, observables, events, netflows to confirm the Attack's IP address is doing some bad thing. Data Exfiltration/Data Loss is expected on SNA / XDR.
+	3. Students access XDR/SNA and find that an incident / alert has been popping up, they investigate the attack chain, observables, events, netflows to confirm the Attack's IP address is doing some bad thing. Data Exfiltration/Data Loss is expected on SNA / XDR.
 	4. Students access FMC to create a rule and apply it to block the conversation between Attacker and coinforge servers
 	5. After waiting for about 5 minutes, students can see that their points start increasing again, and the coinforge server status is now "online." This indicates that the business has recovered and the hacker attack has been successfully stopped.
 
