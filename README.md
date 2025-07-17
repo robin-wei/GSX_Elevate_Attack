@@ -58,7 +58,7 @@
 
 		* * * * * /coin-forge/forge-script.sh >> /coin-forge/forge-script.log 2>&1  - generate coin payload and send it to coin collector per 1 min
 
-		* * * * * /coin-forge/health-script-5s-cronwrapper.sh >> /coin-forge/health-script.log 2>&1  - health check for coinfore and coin collector per 3 second
+		* * * * * /coin-forge/health-script-5s-cronwrapper.sh >> /coin-forge/health-script.log 2>&1  - health check for coinfore and coin collector per 1 mins
 
 		*/3 * * * * /coin-forge/restore_cfg.sh >> /coin-forge/restore.log 2>&1  - restore the cfg.json per 3 mins
 
