@@ -64,4 +64,4 @@
 
 # To be done
 
-	Tuning, merging and automating
+	Integrate products and tune the policy to make sure we can find the attacks and create appreciate events/alerts/incdents.
