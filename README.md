@@ -3,7 +3,7 @@
 # Background
 
 	1. Challenge : The OS of Coinforge server is 32 bit.  Agent of Caldera can not be deployed on it. (Re-compiling is also a problem as go-gang doesn’t run on 32 bit). It is also too old to instal MSFC framework on it.
-	2. Good Chance:  This old Metasploit server has been installed a samba3.0.20 that has an available vulnerability to be leveraged for establish C&C.
+	2. Good Chance:  This Metasploit server(Coinforge Server) has been installed a samba3.0.20 that has an available vulnerability to be leveraged for establish C&C.
 
 # Method 
 
