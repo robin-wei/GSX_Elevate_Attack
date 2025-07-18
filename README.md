@@ -7,7 +7,7 @@
 
 # Method 
 
-	1. Kali has MSFC and works well, so we may use Kali as the control server of attack, to leverage samba vulnerability to establish the command and control tunnel.
+	1. Kali has MSFC and works well, so we decided to use Kali as the control server of attack, to leverage samba vulnerability to establish the command and control tunnel.
 	2. Coinforge will be the target controlled by Kali.
 
 # Story Line
@@ -17,12 +17,13 @@
 	3. Students access XDR/SNA and find that an incident / alert has been popping up, they investigate the attack chain, observables, events, netflows to confirm the Attack's IP address is doing some bad thing. Data Exfiltration/Data Loss is expected on SNA / XDR.
 	4. Students access FMC to create a rule and apply it to block the conversation between Attacker and coinforge servers
 	5. After waiting for about 5 minutes, students can see that their points start increasing again, and the coinforge server status is now "online." This indicates that the business has recovered and the hacker attack has been successfully stopped.
+ 	6. Easter Eggs: During the investigation process, students have a chance to find the detailed events and logs related with C&C (Filter by ip address), then they may find a URL addressed on Attacker IP address. Copy that URL and paste it on browser of Jumphost, they will find a fun thing about the attacker.
 
 	Note: Students don’t need to access the coinforge server or the attacker’s machine manually, as all necessary scripts are already scheduled via crontab.
 
 # Attack
 
-	Run 2 attacks as a service: 
+	Run 2 attacks as a cron task: 
 
 		a. Upload the coin tokens to Kali to simulate data exfiltration (Tigger SNA alerts) (1,2)
 		b. Interrupting coin flow, change ip and url for cfg.json to interrupt the communication and also receive post data as stealing data  (3,4,5,6) 
