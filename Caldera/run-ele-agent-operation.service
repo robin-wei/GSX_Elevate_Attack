@@ -1,0 +1,16 @@
+[Unit]
+Description=Run ELE Agent Operation Script
+After=network.target caldera.service
+Requires=caldera.service
+
+[Service]
+Type=simple
+User=dcloud
+Group=dcloud
+WorkingDirectory=/home/dcloud/caldera
+ExecStart=/usr/bin/python3 /home/dcloud/caldera/run_ele_operation.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
