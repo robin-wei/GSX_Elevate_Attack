@@ -1,0 +1,14 @@
+[Unit]
+Description=Coinworm Web Server
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/home/dcloud/coinbank/web/start-webserver.sh
+WorkingDirectory=/home/dcloud/coinbank/web
+Restart=on-failure
+User=dcloud
+Group=dcloud
+
+[Install]
+WantedBy=multi-user.target
