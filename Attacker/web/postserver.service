@@ -1,0 +1,13 @@
+[Unit]
+Description=Flask Coin Post Server
+After=network.target
+
+[Service]
+User=dcloud
+WorkingDirectory=/home/dcloud/coinbank/web
+ExecStart=/usr/bin/python3 /home/dcloud/coinbank/web/postserver.py
+Restart=always
+Environment=FLASK_ENV=production
+
+[Install]
+WantedBy=multi-user.target
