@@ -1,0 +1,15 @@
+[Unit]
+Description=Caldera service
+After=network.target
+
+[Service]
+User=dcloud
+Group=dcloud
+WorkingDirectory=/home/dcloud/caldera
+Environment="PATH=/home/dcloud/caldera/caldera-venv/bin"
+ExecStart=/home/dcloud/caldera/caldera-venv/bin/python server.py --insecure
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
