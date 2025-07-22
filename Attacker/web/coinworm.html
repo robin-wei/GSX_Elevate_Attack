@@ -7,112 +7,121 @@
   <style>
     body { margin: 0; overflow: hidden; background: #090909; }
     canvas { display: block; margin: auto; }
+
+    #flag-text {
+      position: absolute;
+      top: 10px;
+      width: 100%;
+      text-align: center;
+      font-size: 16px;
+      z-index: 10;
+      color: white;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 5px;
+      user-select: text;
+    }
   </style>
 </head>
 <body>
-<script>
-  // Calculate worm body position; coordinates scaled by 1.5x for moderate zoom
-  function aPos(x, y, d = mag(k = (4 + sin(y * 2 - t) * 3) * cos(x / 29), e = y / 8 - 13)) {
-    let q = 3 * sin(k * 2) + 0.3 / k + sin(y / 25) * k * (9 + 4 * sin(e * 9 - d * 3 + t * 2));
-    let c = d - t;
-    return {
-      x: 1.5 * (q + 30 * cos(c) + 200),
-      y: 1.5 * (q * sin(c) + d * 39 - 220)
+  <div id="flag-text">CTF_Elevate_Attack_Flag_Coinworm</div>
+  <script>
+    // Calculate worm body position; coordinates scaled by 1.5x for moderate zoom
+    function aPos(x, y, d = mag(k = (4 + sin(y * 2 - t) * 3) * cos(x / 29), e = y / 8 - 13)) {
+      let q = 3 * sin(k * 2) + 0.3 / k + sin(y / 25) * k * (9 + 4 * sin(e * 9 - d * 3 + t * 2));
+      let c = d - t;
+      return {
+        x: 1.5 * (q + 30 * cos(c) + 200),
+        y: 1.5 * (q * sin(c) + d * 39 - 220)
+      };
+    }
+
+    let t = 0;
+
+    const bCoinSize = 26; // B symbol size, moderate scale
+    const eatSpeed = 0.02;
+    const showDuration = 120;
+
+    // Worm points: head, tentacles, antennae
+    const points = {
+      head: { i: 10000, yDiv: 10000 / 235 },
+      tentacle1: { i: 7000, yDiv: 7000 / 235 },
+      tentacle2: { i: 5000, yDiv: 5000 / 235 },
+      headAntenna: { i: 11000, yDiv: 11000 / 235 },
+      tailAntenna: { i: 2000, yDiv: 2000 / 235 }
     };
-  }
 
-  let t = 0;
+    // Coin animation state and position offset (offsets scaled by 1.5)
+    const circles = {
+      head: { state: "show", scale: 1, frameCountSinceShow: 0, offsetX: 0 },
+      tentacle1: { state: "show", scale: 1, frameCountSinceShow: 40, offsetX: -22.5 },
+      tentacle2: { state: "show", scale: 1, frameCountSinceShow: 80, offsetX: 22.5 },
+      headAntenna: { state: "show", scale: 1, frameCountSinceShow: 20, offsetX: 0 },
+      tailAntenna: { state: "show", scale: 1, frameCountSinceShow: 60, offsetX: 0 }
+    };
 
-  const bCoinSize = 26; // ₿ symbol size, moderate scale
-  const eatSpeed = 0.02;
-  const showDuration = 120;
-
-  // Worm points: head, tentacles, antennae
-  const points = {
-    head: { i: 10000, yDiv: 10000 / 235 },
-    tentacle1: { i: 7000, yDiv: 7000 / 235 },
-    tentacle2: { i: 5000, yDiv: 5000 / 235 },
-    headAntenna: { i: 11000, yDiv: 11000 / 235 },
-    tailAntenna: { i: 2000, yDiv: 2000 / 235 }
-  };
-
-  // Coin animation state and position offset (offsets scaled by 1.5)
-  const circles = {
-    head: { state: "show", scale: 1, frameCountSinceShow: 0, offsetX: 0 },
-    tentacle1: { state: "show", scale: 1, frameCountSinceShow: 40, offsetX: -22.5 }, // -15 * 1.5
-    tentacle2: { state: "show", scale: 1, frameCountSinceShow: 80, offsetX: 22.5 },
-    headAntenna: { state: "show", scale: 1, frameCountSinceShow: 20, offsetX: 0 },
-    tailAntenna: { state: "show", scale: 1, frameCountSinceShow: 60, offsetX: 0 }
-  };
-
-  function setup() {
-    createCanvas(600, 600); // Canvas size adjusted for 1.5x scale
-    strokeWeight(1);
-    noFill();
-    textFont('Arial');
-    textAlign(CENTER, CENTER);
-  }
-
-  function updateCircle(c) {
-    if (c.state === "show") {
-      c.frameCountSinceShow++;
-      if (c.frameCountSinceShow > showDuration) {
-        c.state = "eat";
-      }
-      c.scale = 1;
-    } else if (c.state === "eat") {
-      c.scale -= eatSpeed;
-      if (c.scale <= 0) {
-        c.scale = 0;
-        c.state = "show";
-        c.frameCountSinceShow = 0;
-      }
-    }
-  }
-
-  function drawCircle(pos, c) {
-    updateCircle(c);
-    noStroke();
-    fill(255, 204, 0, 200);
-    push();
-    translate(pos.x + c.offsetX, pos.y - 30); // -20 * 1.5 = -30 offset y
-    scale(c.scale);
-    textSize(bCoinSize);
-    //text('₿', 0, 0);
-    text('B', 0, 0);
-    pop();
-
-    noFill();
-    stroke(255, 204, 0, 100);
-    ellipse(pos.x, pos.y, 45); // 30 * 1.5 circle diameter
-  }
-
-  function draw() {
-    background(9);
-    stroke(255);
-    t += PI / 240;
-
-    // Draw worm points in white
-    stroke(255);
-    for (let i = 1e4; i--;) {
-      let pos = aPos(i, i / 235);
-      point(pos.x, pos.y);
+    function setup() {
+      createCanvas(600, 600);
+      strokeWeight(1);
+      noFill();
+      textFont('Arial');
+      textAlign(CENTER, CENTER);
     }
 
-    // Calculate positions for worm parts
-    let headPos = aPos(points.head.i, points.head.yDiv);
-    let tentacle1Pos = aPos(points.tentacle1.i, points.tentacle1.yDiv);
-    let tentacle2Pos = aPos(points.tentacle2.i, points.tentacle2.yDiv);
-    let headAntennaPos = aPos(points.headAntenna.i, points.headAntenna.yDiv);
-    let tailAntennaPos = aPos(points.tailAntenna.i, points.tailAntenna.yDiv);
+    function updateCircle(c) {
+      if (c.state === "show") {
+        c.frameCountSinceShow++;
+        if (c.frameCountSinceShow > showDuration) {
+          c.state = "eat";
+        }
+        c.scale = 1;
+      } else if (c.state === "eat") {
+        c.scale -= eatSpeed;
+        if (c.scale <= 0) {
+          c.scale = 0;
+          c.state = "show";
+          c.frameCountSinceShow = 0;
+        }
+      }
+    }
 
-    // Draw all ₿ coins with animation
-    drawCircle(headPos, circles.head);
-    drawCircle(tentacle1Pos, circles.tentacle1);
-    drawCircle(tentacle2Pos, circles.tentacle2);
-    drawCircle(headAntennaPos, circles.headAntenna);
-    drawCircle(tailAntennaPos, circles.tailAntenna);
-  }
-</script>
+    function drawCircle(pos, c) {
+      updateCircle(c);
+      noStroke();
+      fill(255, 204, 0, 200);
+      push();
+      translate(pos.x + c.offsetX, pos.y - 30);
+      scale(c.scale);
+      textSize(bCoinSize);
+      text('B', 0, 0);
+      pop();
+
+      noFill();
+      stroke(255, 204, 0, 100);
+      ellipse(pos.x, pos.y, 45);
+    }
+
+    function draw() {
+      background(9);
+      stroke(255);
+      t += PI / 240;
+
+      for (let i = 1e4; i--;) {
+        let pos = aPos(i, i / 235);
+        point(pos.x, pos.y);
+      }
+
+      let headPos = aPos(points.head.i, points.head.yDiv);
+      let tentacle1Pos = aPos(points.tentacle1.i, points.tentacle1.yDiv);
+      let tentacle2Pos = aPos(points.tentacle2.i, points.tentacle2.yDiv);
+      let headAntennaPos = aPos(points.headAntenna.i, points.headAntenna.yDiv);
+      let tailAntennaPos = aPos(points.tailAntenna.i, points.tailAntenna.yDiv);
+
+      drawCircle(headPos, circles.head);
+      drawCircle(tentacle1Pos, circles.tentacle1);
+      drawCircle(tentacle2Pos, circles.tentacle2);
+      drawCircle(headAntennaPos, circles.headAntenna);
+      drawCircle(tailAntennaPos, circles.tailAntenna);
+    }
+  </script>
 </body>
 </html>
