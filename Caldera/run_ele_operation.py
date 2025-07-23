@@ -98,7 +98,6 @@ def monitor_and_run():
 
             agents = response.json()
             new_agents = [agent for agent in agents if agent['paw'] not in known_agents]
-
             coinworm_agents = [a for a in agents if a.get('group') == AGENT_GROUP and a.get('trusted', True)]
 
             for agent in new_agents:
@@ -107,8 +106,9 @@ def monitor_and_run():
 
             save_known_agents(known_agents)
 
+            delete_dead_agents()  # ← Always delete dead agents
+
             if coinworm_agents:
-                delete_dead_agents()
                 delete_old_ele_operations()
                 create_ELE_operation()
             else:
