@@ -41,7 +41,7 @@ def delete_dead_agents():
             if not agent.get('trusted', False):
                 agent_id = agent.get('paw')
                 del_response = requests.delete(f'{CALDERA_URL}/agents/{agent_id}', headers=headers)
-                if del_response.status_code == 200:
+                if del_response.status_code in (200, 204):
                     log_message(f'Deleted dead agent: {agent_id}')
     except Exception as e:
         log_message(f'Error deleting dead agents: {e}')
@@ -56,7 +56,7 @@ def delete_old_ele_operations():
         for op in operations:
             if op['name'].startswith(PROFILE_NAME_ELE):
                 del_resp = requests.delete(f'{CALDERA_URL}/operations/{op["id"]}', headers=headers)
-                if del_resp.status_code == 200:
+                if del_resp.status_code in (200, 204):
                     log_message(f'Deleted old operation: {op["name"]}')
     except Exception as e:
         log_message(f'Error deleting old operations: {e}')
@@ -93,32 +93,33 @@ def monitor_and_run():
 
     while True:
         try:
+            # Always delete dead agents first
+            delete_dead_agents()
+
+            # Re-fetch agents after cleanup
             response = requests.get(f'{CALDERA_URL}/agents', headers={'Key': API_KEY})
             response.raise_for_status()
-
             agents = response.json()
-            new_agents = [agent for agent in agents if agent['paw'] not in known_agents]
-            coinworm_agents = [a for a in agents if a.get('group') == AGENT_GROUP and a.get('trusted', True)]
 
+            # Detect new agents
+            new_agents = [agent for agent in agents if agent['paw'] not in known_agents]
             for agent in new_agents:
                 known_agents.add(agent['paw'])
                 log_message(f'New agent onboarded: {agent["paw"]}')
-
             save_known_agents(known_agents)
 
-            delete_dead_agents()  # ← Always delete dead agents
-
+            # Filter coinworm agents
+            coinworm_agents = [a for a in agents if a.get('group') == AGENT_GROUP and a.get('trusted', True)]
             if coinworm_agents:
                 delete_old_ele_operations()
                 create_ELE_operation()
             else:
                 log_message("No active 'coinworm' agents found. Skipping operation.")
 
-            time.sleep(OPERATION_INTERVAL)
-
         except requests.exceptions.RequestException as e:
             log_message(f'Error while monitoring agents: {e}')
-            time.sleep(OPERATION_INTERVAL)
+
+        time.sleep(OPERATION_INTERVAL)
 
 if __name__ == '__main__':
     monitor_and_run()
