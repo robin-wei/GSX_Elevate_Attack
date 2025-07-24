@@ -3,7 +3,7 @@
 LOCKFILE="/tmp/cfg_restore.lock"
 CFG_PATH="/coin-forge/cfg.json"
 EXPECTED_IP="198.18.5.179"
-EXPECTED_URL="https://cisco.com"
+EXPECTED_URL="http://cnn.com"
 EXPECTED_HOST="CoinForge-2"
 
 log() {
