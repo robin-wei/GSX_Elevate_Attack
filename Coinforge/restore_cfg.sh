@@ -35,3 +35,8 @@ cat > "$CFG_PATH" <<EOF
   "COIN_FORGE_HOST": "$EXPECTED_HOST"
 }
 EOF
+
+log "Configuration restored to original state."
+
+# Remove lock file
+rm -f "$LOCKFILE"
