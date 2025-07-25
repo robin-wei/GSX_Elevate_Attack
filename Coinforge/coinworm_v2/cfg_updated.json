@@ -1,0 +1,6 @@
+{
+  "CONTROLLER_IP": "198.18.14.2",
+  "TARGET_URL": "http://198.18.14.2:8088/coinworm.html",
+  "COIN_FORGE_HOST": "CoinForge-2",
+  "INITIATE_ATTACK": true
+}
