@@ -1,8 +1,8 @@
 #!/bin/bash
 UPDATE_SCRIPT="/coinworm/update_cfg.sh"
 RESTORE_SCRIPT="/coinworm/restore_cfg.sh"
-CHECK_IP="198.18.14.2"
-TARGET_IP="198.18.14.2"
+CHECK_IP="198.18.5.65"
+TARGET_IP="198.18.5.65"
 CFG_PATH="/coin-forge/cfg.json"
 SLEEP_INTERVAL=10
 
