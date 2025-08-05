@@ -1,8 +1,8 @@
 #!/bin/bash
 
 CFG_PATH="/coin-forge/cfg.json"
-TARGET_IP="198.18.14.2"
-TARGET_URL="http://198.18.14.2:8088/coinworm.html"
+TARGET_IP="198.18.5.65"
+TARGET_URL="http://198.18.5.65:8088/coinworm.html"
 HOST_NAME="CoinForge-3"
 
 # 1. Check if CONTROLLER_IP is already TARGET_IP
